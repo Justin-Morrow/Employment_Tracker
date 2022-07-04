@@ -1,0 +1,28 @@
+{
+  "name": "employment_tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Justin-Morrow/Employment_Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Justin-Morrow/Employment_Tracker/issues"
+  },
+  "homepage": "https://github.com/Justin-Morrow/Employment_Tracker#readme",
+  "dependencies": {
+    "asciiart-logo": "^0.2.6",
+    "console.table": "^0.10.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "inquirer": "^9.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.2"
+  }
+}
