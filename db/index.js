@@ -42,7 +42,27 @@ class DB {
         )
     }
 
+    addRole (title, salary, department_id) {
+        return this.connection.promise().query(
+            `INSERT INTO role SET ? `, {title, salary, department_id}
+        )
+    }
 
+    addEmployee (first_name, last_name, role_id, manager_id) {
+        return this.connection.promise().query (
+            `INSERT INTO role SET ? `, {title, salary, department_id}
+        )
+    }
+
+    updateEmployeeRole(id, role_id) {
+        return this.connection.promise().query(
+            `UPDATE employee set ? WHERE ? `, [{role_id}, {id}]
+        )
+    }
+
+    quit(){
+        connection.end();
+    }
 }
 
 module.exports = new DB(connection);
