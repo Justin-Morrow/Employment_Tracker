@@ -24,6 +24,35 @@ const options = async () => {
         
         }
     ])
-    
+
     callActions( option );
+}
+
+const callActions = ( option ) => {
+    switch(option){
+        case "VIEW_DEPARTAMENTS":
+            viewDepartament();
+            break;
+        case "VIEW_ROLES":
+            viewRoles();
+            break;
+        case "VIEW_EMPLOYEES":
+            viewEmployees();
+            break;
+        case "ADD_DEPARTMENT":
+            addDepartament();
+            break;
+        case "ADD_ROLE":
+            addRole();
+            break;
+        case "ADD_EMPLOYEE":
+            addEmployee();
+            break;    
+        case "UPDATE_EMPLOYEE_ROLE":
+            updateEmployeeRole();
+            break;
+        case "QUIT":
+            db.quit();
+            break;                                    
+    }
 }
