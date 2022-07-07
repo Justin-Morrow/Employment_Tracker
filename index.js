@@ -2,15 +2,18 @@ const db = require("./db");
 const inquirer = require("inquirer");
 const asciiartLogo = require("asciiart-logo");
 const { quit } = require("./db");
-const { mapFinderOptions } = require("sequelize/types/utils");
+// const { mapFinderOptions } = require("sequelize/types/utils");
 require("console.table");
+let userOption; 
 
 const init = async () => {
     const logo = asciiartLogo({name: "Employee Tracker"}).render();
     console.log(logo);
-    options();
+    options.then(answers =>{
+    userOption = answers.option;    
+    });
+    callActions( userOption );
 }
-
 
 const options = async () => {
     console.log("starting function");
@@ -24,11 +27,14 @@ const options = async () => {
         
         }
     ])
-
-    callActions( option );
+    // userOption = option;
+    return option;
+    // callActions( option );
 }
 
 const callActions = ( option ) => {
+    console.log("I am in callActions")
+    console.log("Option=", option);
     switch(option){
         case "VIEW_DEPARTAMENTS":
             viewDepartament();
@@ -56,3 +62,5 @@ const callActions = ( option ) => {
             break;                                    
     }
 }
+
+init ();
