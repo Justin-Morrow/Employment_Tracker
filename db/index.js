@@ -7,6 +7,7 @@ class DB {
     }
     
     viewDepartment () {
+        console.log("I'm in viewDepartment");
         return this.connection.promise().query(
         `SELECT * FROM department`
         )
@@ -14,7 +15,7 @@ class DB {
 
     viewRoles() {
         return this.connection.promise().query(
-        `SELECT role.id, role.title as Title, role.salary as Salary, department.department_name as Department FROM role
+        `SELECT role.id, role.title as Title, role.salary as Salary, department.name as Department FROM role
         LEFT JOIN department 
         ON role.department_id = department.id `
         )
@@ -23,7 +24,7 @@ class DB {
 
     viewEmployees() {
         return this.connection.promise().query(
-            `SELECT em.id, concat(em.first_name," ", em.last_name) as Employee_Name, r.title as Title, r.salary as Salary, d.department_name as Department, concat(e.first_name," ", e.last_name) as Manager_Name
+            `SELECT em.id, concat(em.first_name," ", em.last_name) as Employee_Name, r.title as Title, r.salary as Salary, d.name as Department, concat(e.first_name," ", e.last_name) as Manager_Name
             FROM employee em
             LEFT JOIN role r
             ON em.role_id = r.id
@@ -36,9 +37,9 @@ class DB {
         )
     }
 
-    addDepartment(department_name) {
+    addDepartment(name) {
         return this.connection.promise().query(
-            `INSERT INTO department SET ? `, {department_name}
+            `INSERT INTO department SET ? `, name
         )
     }
 
