@@ -101,18 +101,51 @@ const callActions = ( option ) => {
             break;                                    
     }
 }
-function addDepartment () {
+function addRole () {
     inquirer.prompt([
         {
-          name: "name",
-          message: "What is the name of the department?"
+            type: 'input',
+            message: 'Enter the role name',
+            name: 'title',
+        },
+        {
+            type: 'input',
+            message: 'Enter the salary',
+            name: 'salary',
+        },
+        {
+            type: 'list',
+            message: 'Enter the department for this role',
+            name: 'department_id',
+            choices: departments.map(({id, department_name}) =>{
+                return {
+                    name: department_name,
+                    value: id
+                }
+            }
+        ]).then(answer => {
+        console.log("answer", answer);
+        let name = answer;
+        db.addRole(name)
+        .then(()=> console.log(`added ${name.name} to db`))
+        .then(()=> init())
+      })
+}
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+        type: "input",
+        name: "name",
+        message: "What is the name of the department?"
         }
-      ]).then(answer => {
+        ]).then(answer => {
         console.log("answer", answer);
         let name = answer;
         db.addDepartment(name)
         .then(()=> console.log(`added ${name.name} to db`))
         .then(()=> init())
-      })
+        })
 }
+
 pre_init ();
