@@ -2,7 +2,6 @@ const db = require("./db");
 const inquirer = require("inquirer");
 const asciiartLogo = require("asciiart-logo");
 const { quit } = require("./db");
-// const { mapFinderOptions } = require("sequelize/types/utils");
 require("console.table");
 let userOption; 
 function pre_init(){
@@ -20,22 +19,7 @@ const init = async () => {
     });
     
 }
-// function options () {
-//     console.log("starting function");
-//     const { option } =  await inquirer.prompt([
-//         {
-//             type: 'list',
-//             message: 'What would you like to do?',
-//             name: 'option',
-//             choices: ["VIEW_DEPARTMENTS", "VIEW_ROLES", "VIEW_EMPLOYEES", "ADD_DEPARTMENT", "ADD_ROLE", "ADD_EMPLOYEE", "UPDATE_EMPLOYEE_ROLE", "QUIT"],
-//             validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
-        
-//         }
-//     ])
-//     // userOption = option;
-//     return option;
-//     // callActions( option );
-// }
+
 const options = async () => {
     console.log("starting function");
     const { option } =  await inquirer.prompt([
@@ -44,13 +28,11 @@ const options = async () => {
             message: 'What would you like to do?',
             name: 'option',
             choices: ["VIEW_DEPARTMENTS", "VIEW_ROLES", "VIEW_EMPLOYEES", "ADD_DEPARTMENT", "ADD_ROLE", "ADD_EMPLOYEE", "UPDATE_EMPLOYEE_ROLE", "QUIT"],
-            validate: (value) => { if (value) { return true; } else { return "Enter response to continue"; } },
         
         }
     ])
-    // userOption = option;
+
     return option;
-    // callActions( option );
 }
 
 const callActions = ( option ) => {
@@ -101,8 +83,26 @@ const callActions = ( option ) => {
             break;                                    
     }
 }
-function addRole () {
+
+function addDepartment() {
     inquirer.prompt([
+        {
+        type: "input",
+        name: "name",
+        message: "What is the name of the department?"
+        }
+        ]).then(answer => {
+        console.log("answer", answer);
+        let name = answer;
+        db.addDepartment(name)
+        .then(()=> console.log(`added ${name.name} to db`))
+        .then(()=> init())
+        })
+}
+const addRole =  async () => {
+    const [ departments ] = await db.viewDepartment()
+
+    const {title, salary, department_id} = await inquirer.prompt([
         {
             type: 'input',
             message: 'Enter the role name',
@@ -122,30 +122,93 @@ function addRole () {
                     name: department_name,
                     value: id
                 }
-            }
-        ]).then(answer => {
-        console.log("answer", answer);
-        let name = answer;
-        db.addRole(name)
-        .then(()=> console.log(`added ${name.name} to db`))
-        .then(()=> init())
-      })
+            }),
+        }
+    ])
+    await db.addRole(title, salary, department_id);
+    viewRoles();
 }
 
-function addDepartment() {
-    inquirer.prompt([
-        {
-        type: "input",
-        name: "name",
-        message: "What is the name of the department?"
-        }
-        ]).then(answer => {
-        console.log("answer", answer);
-        let name = answer;
-        db.addDepartment(name)
-        .then(()=> console.log(`added ${name.name} to db`))
-        .then(()=> init())
-        })
+const addEmployee = async() => {
+    const [ roles ] = await db.viewRoles();
+    const [employees] = await db.viewEmployees();
+    const {first_name, last_name, role_id, manager_id} = await inquirer.prompt([
+    {
+        type: 'input',
+        message: 'Enter the first name of the employee',
+        name: 'first_name',
+    },
+    {
+        type: 'input',
+        message: 'Enter the last name of the employee',
+        name: 'last_name',
+    },
+    {
+        type: 'list',
+        message: 'Enter the role',
+        name: 'role_id',
+        choices: roles.map(({Title, id}) =>{
+            return {
+                name:Title,
+                value: id
+            }
+        }),
+    },
+    {
+        type: 'list',
+        message: 'Enter manager name',
+        name: 'manager_id',
+        choices: employees.map(({Employee_Name, id})=>{
+
+            return {
+                name: Employee_Name,
+                value: id
+            }
+        }),
+    }
+])     
+    console.log(first_name, last_name, role_id, manager_id);
+    await db.addEmployee(first_name, last_name, role_id, manager_id);
+    viewEmployees();
 }
+
+const updateEmployeeRole = async () =>{
+    const [ roles ] = await db.viewRoles();
+    const [employees] = await db.viewEmployees();
+    const { employee_id, role_id } =  await inquirer.prompt([
+        {
+            type: 'list',
+            message: 'Which employee whould you like to update the role for?',
+            name: 'employee_id',
+            choices: employees.map(({Employee_Name, id})=>{
+    
+                return {
+                    name: Employee_Name,
+                    value: id
+                }
+            }),
+        },
+        {
+            type: 'list',
+            message: 'Enter the role',
+            name: 'role_id',
+            choices: roles.map(({Title, id}) =>{
+                return {
+                    name:Title,
+                    value: id
+                }
+            }),
+        }
+
+
+    ])
+
+    await db.updateEmployeeRole(employee_id, role_id);
+
+    viewEmployees();
+
+}
+
 
 pre_init ();
+
