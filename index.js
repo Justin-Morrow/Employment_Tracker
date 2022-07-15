@@ -126,7 +126,13 @@ const addRole =  async () => {
         }
     ])
     await db.addRole(title, salary, department_id);
-    viewRoles();
+    db.viewRoles()
+    .then(([rows])=>{
+        let allRoles = rows;
+        console.log("\n");
+        console.table(allRoles);
+    }).
+    then(()=>init());
 }
 
 const addEmployee = async() => {
@@ -169,7 +175,13 @@ const addEmployee = async() => {
 ])     
     console.log(first_name, last_name, role_id, manager_id);
     await db.addEmployee(first_name, last_name, role_id, manager_id);
-    viewEmployees();
+    db.viewEmployees()
+    .then(([rows])=>{
+        let allEmployees = rows;
+        console.log("\n");
+        console.table(allEmployees);
+    }).
+    then(()=>init());
 }
 
 const updateEmployeeRole = async () =>{
@@ -205,7 +217,13 @@ const updateEmployeeRole = async () =>{
 
     await db.updateEmployeeRole(employee_id, role_id);
 
-    viewEmployees();
+    db.viewEmployees()
+    .then(([rows])=>{
+        let allEmployees = rows;
+        console.log("\n");
+        console.table(allEmployees);
+    }).
+    then(()=>init());
 
 }
 
