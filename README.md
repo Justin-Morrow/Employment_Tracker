@@ -1,5 +1,5 @@
 # Employment_Tracker
-![Thumbnail]()
+![Thumbnail](https://drive.google.com/file/d/1z112wCkEffgShpI0iOMG-JZx-L5DNdA_/view)
 
 ## Table of Contents
 
