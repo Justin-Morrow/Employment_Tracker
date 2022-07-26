@@ -1,5 +1,7 @@
 # Employment_Tracker
-![Thumbnail](https://drive.google.com/file/d/1z112wCkEffgShpI0iOMG-JZx-L5DNdA_/view)
+![Thumbnail](./Assets/./12-sql-homework-video-thumbnail.png)
+
+Video: (https://drive.google.com/file/d/1z112wCkEffgShpI0iOMG-JZx-L5DNdA_/view)
 
 ## Table of Contents
 
